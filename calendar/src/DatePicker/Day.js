@@ -1,30 +1,25 @@
-import React, { Component } from "react";
+import React from "react";
 
-import Month from "./Month";
-import { getMonthName } from "./helpers";
-import "./DatePicker.css";
+export default function Day({hovering, fullDate, onClick, selected, onMouseEnter, onMouseLeave}) {
+    if (fullDate == null) {
+        return <div className={"EmptyStateDay"} />
+    }
 
-class DatePicker extends Component {
-  render() {
-    const { fullDate, onDayClick } = this.props;
+    const date = fullDate.getDate();
+    let className = "Day";
 
-    const dateNumber = fullDate.getDate();
-    const monthNumber = fullDate.getMonth();
-    const yearNumber = fullDate.getFullYear();
-    const monthName = getMonthName(monthNumber);
+    if (selected) {
+        className = "Day Day--selected"
+    } else if (hovering) {
+        className = "Day Day--hovering";
+    }
 
     return (
-      <div className="DatePickerContainer">
-        <div className="DatePickerContainer__Title">{monthName}</div>
-        <Month
-          date={dateNumber}
-          month={monthNumber}
-          year={yearNumber}
-          onDayClick={onDayClick}
-        />
-      </div>
+        <button
+            className={className}
+            onClick={onClick.bind(this, date)}
+            onMouseEnter={onMouseEnter.bind(this, date)}
+            onMouseLeave={onMouseLeave}
+        >{date}</button>
     );
-  }
 }
-
-export default DatePicker;
